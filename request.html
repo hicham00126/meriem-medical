@@ -7,149 +7,145 @@
 
 <style>
 body {
-  font-family: Arial, Tahoma, sans-serif;
-  background: #eef2f3;
+  font-family: "Tahoma", Arial, sans-serif;
+  background: linear-gradient(135deg, #0b76c9, #4cb0f5);
   margin: 0;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
+
 .card {
-  background: white;
+  background: #fff;
   width: 380px;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.18);
   text-align: center;
 }
-input, select, button {
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #0a5fa4;
+  font-size: 22px;
+}
+
+input, select {
   width: 100%;
   padding: 12px;
-  margin-top: 10px;
-  font-size: 16px;
-  border-radius: 8px;
+  margin-top: 12px;
+  border-radius: 10px;
   border: 1px solid #cfcfcf;
+  font-size: 15px;
 }
+
 button {
-  background: #0077cc;
-  color: white;
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  background: #0b76c9;
+  color: #fff;
   border: none;
+  font-size: 16px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: 0.25s;
 }
-#msg { margin-top: 10px; font-weight: bold; }
-#msg.success { color: green; }
-#msg.error { color: red; }
+
+button:hover {
+  background: #095d9e;
+}
+
+#msg {
+  margin-top: 15px;
+  font-weight: bold;
+  min-height: 20px;
+}
+
+#msg.success {color: green;}
+#msg.error {color: #c00;}
 </style>
 </head>
 
 <body>
 
 <div class="card">
-
   <h2>طلب نقل مريض</h2>
 
-  <input id="patient_name" placeholder="اسم المريض" />
+  <input id="patient_name" placeholder="اسم المريض">
 
-  <!-- حالة المريض -->
   <select id="patient_state">
-      <option value="">اختر حالة المريض</option>
-      <option value="عاجلة">عاجلة</option>
-      <option value="مستقرة">مستقرة</option>
+      <option value="">حالة المريض</option>
+      <option>عاجلة</option>
+      <option>مستقرة</option>
   </select>
 
-  <!-- المصلحة الحالية -->
   <select id="from_dep">
-      <option value="">اختر المصلحة الحالية</option>
+      <option value="">المصلحة الحالية</option>
       <option>الاستعجالات</option>
       <option>الطب الداخلي</option>
       <option>الإنعاش</option>
-      <option>مصلحة جراحة الاوعية والشرايين</option>
-      <option>مصلحة أمراض الكلى</option>
-      <option>مصلحة أمراض الدم</option>
-      <option>مصلحة الامراض التنفسية</option>
-      <option>مصلحة الامراض المعدية</option>
-      <option>مصلحة الانعاش الجراحي</option>
-      <option>مصلحة الانعاش الطبي</option>
-      <option>مصلحة جراحة العظام</option>
-      <option>مصلحة المسالك البولية</option>
-      <option>مصلحة أمراض القلب</option>
-      <option>مصلحة جراحة الرجال</option>
-      <option>مصلحة جراحة النساء</option>
-      <option>مصلحة جراحة الاطفال</option>
+      <option>جراحة العظام</option>
+      <option>أمراض الكلى</option>
+      <option>أمراض القلب</option>
   </select>
 
-  <!-- المصلحة المطلوبة -->
   <select id="to_dep">
-      <option value="">اختر المصلحة المطلوبة</option>
+      <option value="">المصلحة المطلوبة</option>
       <option>الاستعجالات</option>
       <option>الطب الداخلي</option>
       <option>الإنعاش</option>
-      <option>مصلحة جراحة الاوعية والشرايين</option>
-      <option>مصلحة أمراض الكلى</option>
-      <option>مصلحة أمراض الدم</option>
-      <option>مصلحة الامراض التنفسية</option>
-      <option>مصلحة الامراض المعدية</option>
-      <option>مصلحة الانعاش الجراحي</option>
-      <option>مصلحة الانعاش الطبي</option>
-      <option>مصلحة جراحة العظام</option>
-      <option>مصلحة المسالك البولية</option>
-      <option>مصلحة أمراض القلب</option>
-      <option>مصلحة جراحة الرجال</option>
-      <option>مصلحة جراحة النساء</option>
-      <option>مصلحة جراحة الاطفال</option>
+      <option>جراحة العظام</option>
+      <option>أمراض الكلى</option>
+      <option>أمراض القلب</option>
   </select>
-
-  <div id="msg"></div>
 
   <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
+
+  <div id="msg"></div>
 
 </div>
 
 <script>
-async function sendRequest() {
-  const patient_name = document.getElementById("patient_name").value.trim();
-  const patient_state = document.getElementById("patient_state").value;
-  const from_dep = document.getElementById("from_dep").value;
-  const to_dep = document.getElementById("to_dep").value;
-  const msg = document.getElementById("msg");
-  const btn = document.getElementById("sendBtn");
+async function sendRequest(){
+    const name = document.getElementById("patient_name").value.trim();
+    const state = document.getElementById("patient_state").value;
+    const from = document.getElementById("from_dep").value;
+    const to = document.getElementById("to_dep").value;
 
-  if (!patient_name || !patient_state || !from_dep || !to_dep) {
-    msg.className = "error";
-    msg.innerText = "يرجى ملء جميع المعلومات.";
-    return;
-  }
+    const msg = document.getElementById("msg");
+    const btn = document.getElementById("sendBtn");
 
-  if (from_dep === to_dep) {
-    msg.className = "error";
-    msg.innerText = "لا يمكن اختيار نفس المصلحة.";
-    return;
-  }
+    if(!name || !state || !from || !to){
+        msg.className = "error";
+        msg.innerText = "الرجاء ملء جميع المعلومات.";
+        return;
+    }
 
-  btn.disabled = true;
-  btn.innerText = "جاري الإرسال...";
+    btn.disabled = true;
+    btn.innerText = "جاري الإرسال...";
 
-  try {
-    const res = await fetch("/create_request", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
-    });
+    try {
+        const res = await fetch("/create_request", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({patient_name: name, patient_state: state, from_dep: from, to_dep: to})
+        });
 
-    const data = await res.json();
+        const data = await res.json();
 
-    msg.className = "success";
-    msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+        msg.className = "success";
+        msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+        btn.innerText = "تأكيد الطلب";
 
-    btn.innerText = "تأكيد الطلب";
-
-  } catch (e) {
-    msg.className = "error";
-    msg.innerText = "خطأ في الاتصال.";
-    btn.disabled = false;
-    btn.innerText = "إرسال الطلب";
-  }
+    } catch (e){
+        msg.className = "error";
+        msg.innerText = "خطأ في الاتصال.";
+        btn.disabled = false;
+        btn.innerText = "إرسال الطلب";
+    }
 }
 </script>
 
