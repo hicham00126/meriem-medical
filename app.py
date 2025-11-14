@@ -6,7 +6,7 @@ import pathlib
 
 app = FastAPI()
 
-# 🔥 السماح للمتصفح بالوصول للملفات (مثل الصور)
+# السماح للمتصفح بالوصول للملفات (مثل الصور)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,8 +15,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🔥 هنا نقول لـ FastAPI يخدم الملفات (صور / CSS / PNG / JPG)
-app.mount("/", StaticFiles(directory=".", html=False), name="static")
+# نركّب ملفات الستاتيك على المسار /static
+# ضع الصورة eph_logo.png في نفس مجلد المشروع (مع login.html و request.html)
+app.mount("/static", StaticFiles(directory="."), name="static")
 
 
 @app.get("/login", response_class=HTMLResponse)
