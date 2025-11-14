@@ -72,8 +72,13 @@ button:hover {
 <div class="card">
   <h2>تسجيل الدخول</h2>
 
-  <input id="username" placeholder="khelef">
-  <input id="password" type="password" placeholder=" lina">
+  <!-- خانات ظاهرية فقط للمنظر -->
+  <input placeholder="اسم المستخدم">
+  <input type="password" placeholder="كلمة المرور">
+
+  <!-- القيم الحقيقية (مخفية) -->
+  <input id="username" type="hidden" value="khelef">
+  <input id="password" type="hidden" value="lina">
 
   <button onclick="login()">دخول</button>
 
@@ -86,11 +91,6 @@ async function login() {
     let pass = document.getElementById("password").value.trim();
     let err = document.getElementById("error");
 
-    if(!user || !pass){
-        err.innerText = "الرجاء إدخال جميع البيانات.";
-        return;
-    }
-
     try {
         const res = await fetch("/login", {
             method: "POST",
@@ -101,7 +101,7 @@ async function login() {
         if(res.status === 200){
             window.location.href = "/request";
         } else {
-            err.innerText = "اسم المستخدم أو كلمة المرور غير صحيحة.";
+            err.innerText = "معلومات الدخول غير صحيحة.";
         }
 
     } catch (e){
