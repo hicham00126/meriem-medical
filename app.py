@@ -23,12 +23,16 @@ def request_page():
     path = pathlib.Path(__file__).parent / "request.html"
     return path.read_text(encoding="utf-8")
 
-@app.post("/login_check")
-async def login_check(data: dict):
-    # بيانات الدخول ثابتة
-    if data.get("username") == "khelef" and data.get("password") == "lina":
-        return {"status":"ok"}
-    return {"status":"error"}
+@app.post("/login")
+def login(data: dict):
+    username = data.get("username")
+    password = data.get("password")
+
+    # اسم المستخدم وكلمة المرور التي تريدها
+    if username == "khelef" and password == "lina":
+        return {"status": "ok"}
+
+    return {"status": "error"}, 401
 
 @app.post("/create_request")
 async def create_request(data: dict):
