@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>طلب نقل مريض</title>
+    <style>
+        body {
+            font-family: Arial, Tahoma, sans-serif;
+            background: #eef2f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            width: 420px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #bbb;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #0077cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #005da3;
+        }
+
+        #msg {
+            margin-top: 15px;
+            color: green;
+            font-weight: bold;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>طلب نقل مريض</h2>
+
+    <input id="patient_name" placeholder="اسم المريض" type="text" />
+
+    <select id="from_dep">
+        <option value="">اختر المصلحة الحالية</option>
+        <option>الاستعجالات</option>
+        <option>الجراحة</option>
+        <option>الطب الداخلي</option>
+        <option>الإنعاش</option>
+    </select>
+
+    <select id="to_dep">
+        <option value="">اختر المصلحة المطلوبة</option>
+        <option>الاستعجالات</option>
+        <option>الجراحة</option>
+        <option>الطب الداخلي</option>
+        <option>الإنعاش</option>
+        <option>مصلحة جراحة الاوعية  والشرايين</option>
+        <option>مصلحة أمراض الكلى</option>
+        <option>مصلحة أمراض الدم</option>
+        <option>مصلحة الامراض التنفسية</option>
+        <option>مصلحة الامراض المعدية</option>
+        <option>مصلحة الانعاش الجراحي</option>
+        <option>مصلحة  الانعاش الطبي</option>
+        <option>مصلحة جراحة العظام</option>
+        <option>مصلحة المسالك البولية</option> 
+        <option>مصلحة أمراض القلب</option>
+        <option>مصلحة جراحة الرجال</option>
+        <option>مصلحة جراحة النساء</option>
+        <option>مصلحة جراحة الاطفال</option>
+    </select>
+
+    <div id="msg"></div>
+
+    <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
+</div>
+
+<script>
+async function sendRequest(){
+    const patient_name = document.getElementById('patient_name').value;
+    const from_dep = document.getElementById('from_dep').value;
+    const to_dep = document.getElementById('to_dep').value;
+
+    const res = await fetch("http://127.0.0.1:9000/create_request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ patient_name, from_dep, to_dep })
+    });
+
+    const data = await res.json();
+
+    document.getElementById('msg').innerText = data.message;
+    document.getElementById('sendBtn').innerText = "تأكيد الطلب";
+}
+</script>
+
+</body>
+</html>
