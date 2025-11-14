@@ -9,15 +9,16 @@
 body {
   font-family: Arial, Tahoma, sans-serif;
   margin: 0;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
-    url("/static/eph_logo.png") no-repeat center center fixed;
-  background-size: cover;
+    url("/static/eph_logo.png") center/contain no-repeat fixed;
+
+  background-size: contain;
 }
 
 .card {
@@ -156,7 +157,7 @@ async function sendRequest() {
   btn.innerText = "جاري الإرسال...";
 
   try {
-    const res = await fetch("/create_request", {
+    const res = await fetch("https://meriem-medical.onrender.com/create_request", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
