@@ -16,24 +16,24 @@ body {
 
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
-    url("/static/eph_logo.png") no-repeat center center fixed;
-  background-size: cover;
+    url("/static/eph_logo.png") center/contain no-repeat fixed;
+
+  background-size: contain;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.92);
   width: 360px;
   padding: 32px;
   border-radius: 14px;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
 }
 
 h2 {
-  margin-top: 0;
   font-size: 24px;
   color: #0a5fa4;
-  margin-bottom: 18px;
+  margin: 0 0 20px 0;
 }
 
 input {
@@ -55,7 +55,6 @@ button {
   font-size: 16px;
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.25s;
 }
 
 button:hover {
@@ -65,8 +64,8 @@ button:hover {
 #error {
   margin-top: 12px;
   color: #b70000;
+  min-height: 22px;
   font-weight: bold;
-  min-height: 20px;
 }
 </style>
 </head>
@@ -96,7 +95,7 @@ async function login() {
     }
 
     try {
-        const res = await fetch("/login", {
+        const res = await fetch("https://meriem-medical.onrender.com/login", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({username: user, password: pass})
