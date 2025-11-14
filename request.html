@@ -23,27 +23,31 @@
 </head>
 <body>
 
-<div class="card" role="main" aria-labelledby="title">
-  <h2 id="title">طلب نقل مريض</h2>
+<div class="card">
+  <h2>طلب نقل مريض</h2>
 
   <input id="patient_name" type="text" placeholder="اسم المريض" autocomplete="off" />
 
-<select id="from_dep" aria-label=" اختر حالة المريض">
+  <!-- حالة المريض -->
+  <select id="patient_state">
+        <option value="">اختر حالة المريض</option>
         <option>عاجلة</option>
         <option>مستقرة</option>
- </select>
-  <select id="from_dep" aria-label="المصلحة الحالية">
+  </select>
+
+  <!-- المصلحة الحالية -->
+  <select id="from_dep">
     <option value="">اختر المصلحة الحالية</option>
         <option>الاستعجالات</option>
         <option>الطب الداخلي</option>
         <option>الإنعاش</option>
-        <option>مصلحة جراحة الاوعية  والشرايين</option>
+        <option>مصلحة جراحة الاوعية والشرايين</option>
         <option>مصلحة أمراض الكلى</option>
         <option>مصلحة أمراض الدم</option>
         <option>مصلحة الامراض التنفسية</option>
         <option>مصلحة الامراض المعدية</option>
         <option>مصلحة الانعاش الجراحي</option>
-        <option>مصلحة  الانعاش الطبي</option>
+        <option>مصلحة الانعاش الطبي</option>
         <option>مصلحة جراحة العظام</option>
         <option>مصلحة المسالك البولية</option> 
         <option>مصلحة أمراض القلب</option>
@@ -52,18 +56,19 @@
         <option>مصلحة جراحة الاطفال</option>
   </select>
 
-  <select id="to_dep" aria-label="المصلحة المطلوبة">
+  <!-- المصلحة المطلوبة -->
+  <select id="to_dep">
     <option value="">اختر المصلحة المطلوبة</option>
         <option>الاستعجالات</option>
         <option>الطب الداخلي</option>
         <option>الإنعاش</option>
-        <option>مصلحة جراحة الاوعية  والشرايين</option>
+        <option>مصلحة جراحة الاوعية والشرايين</option>
         <option>مصلحة أمراض الكلى</option>
         <option>مصلحة أمراض الدم</option>
         <option>مصلحة الامراض التنفسية</option>
         <option>مصلحة الامراض المعدية</option>
         <option>مصلحة الانعاش الجراحي</option>
-        <option>مصلحة  الانعاش الطبي</option>
+        <option>مصلحة الانعاش الطبي</option>
         <option>مصلحة جراحة العظام</option>
         <option>مصلحة المسالك البولية</option> 
         <option>مصلحة أمراض القلب</option>
@@ -72,7 +77,7 @@
         <option>مصلحة جراحة الاطفال</option>
   </select>
 
-  <div id="msg" aria-live="polite"></div>
+  <div id="msg"></div>
 
   <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
   <div class="small">تأكد من صحة المعلومات قبل الإرسال.</div>
@@ -84,14 +89,18 @@
     const msg = document.getElementById('msg');
 
     const patient_name = document.getElementById('patient_name').value.trim();
-    const patient_id = document.getElementById('patient_id').value.trim();
+    const patient_state = document.getElementById('patient_state').value;
     const from_dep = document.getElementById('from_dep').value;
     const to_dep = document.getElementById('to_dep').value;
 
-    // تحقق بسيط
     if(!patient_name){
       msg.className = "error";
       msg.innerText = "رجاءً أدخل اسم المريض.";
+      return;
+    }
+    if(!patient_state){
+      msg.className = "error";
+      msg.innerText = "رجاءً اختر حالة المريض.";
       return;
     }
     if(!from_dep || !to_dep){
@@ -101,41 +110,32 @@
     }
     if(from_dep === to_dep){
       msg.className = "error";
-      msg.innerText = "المصلحة الحالية والمراد نفسهما — اختر مصلحة مختلفة.";
+      msg.innerText = "المصلحتان متشابهتان — اختر مصلحة مختلفة.";
       return;
     }
 
-    // منع الإرسال المتكرر
     btn.disabled = true;
-    const originalText = btn.innerText;
     btn.innerText = "جاري الإرسال...";
+    msg.innerText = "";
 
     try {
       const res = await fetch("/create_request", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ patient_name, patient_id, from_dep, to_dep })
+        body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
       });
 
       const data = await res.json();
 
-      if(res.ok){
-        msg.className = "success";
-        msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
-        btn.innerText = "تأكيد الطلب";
-        // يمكنك هنا إفراغ الحقول إن رغبت:
-        // document.getElementById('patient_name').value = "";
-      } else {
-        msg.className = "error";
-        msg.innerText = data.message || ("خطأ: " + (data.detail || res.status));
-        btn.innerText = originalText;
-        btn.disabled = false;
-      }
+      msg.className = "success";
+      msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+      btn.innerText = "تأكيد الطلب";
+
     } catch (e) {
       msg.className = "error";
-      msg.innerText = "خطأ في الاتصال. تأكد من الإنترنت وحاول مرة أخرى.";
-      btn.innerText = originalText;
+      msg.innerText = "خطأ في الاتصال. حاول مرة أخرى.";
       btn.disabled = false;
+      btn.innerText = "إرسال الطلب";
     }
   }
 </script>
