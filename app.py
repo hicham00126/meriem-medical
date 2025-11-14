@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 import pathlib
 
 app = FastAPI()
 
+# 🔥 السماح للمتصفح بالوصول للملفات (مثل الصور)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,27 +15,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 🔥 هنا نقول لـ FastAPI يخدم الملفات (صور / CSS / PNG / JPG)
+app.mount("/", StaticFiles(directory=".", html=False), name="static")
+
+
 @app.get("/login", response_class=HTMLResponse)
 def login_page():
-    path = pathlib.Path(__file__).parent / "login.html"
+    path = pathlib.Path("login.html")
     return path.read_text(encoding="utf-8")
 
 @app.get("/request", response_class=HTMLResponse)
 def request_page():
-    path = pathlib.Path(__file__).parent / "request.html"
+    path = pathlib.Path("request.html")
     return path.read_text(encoding="utf-8")
 
 @app.post("/login")
 def login(data: dict):
-    username = data.get("username")
-    password = data.get("password")
-
-    # اسم المستخدم وكلمة المرور التي تريدها
-    if username == "khelef" and password == "lina":
+    if data.get("username") == "khelef" and data.get("password") == "lina":
         return {"status": "ok"}
-
     return {"status": "error"}, 401
 
 @app.post("/create_request")
-async def create_request(data: dict):
-    return {"message":"تم إرسال الطلب بنجاح"}
+def create_request(data: dict):
+    return {"message": "تم إرسال الطلب بنجاح"}
