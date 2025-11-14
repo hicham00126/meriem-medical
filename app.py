@@ -25,12 +25,11 @@ def request_page():
 
 @app.post("/login_check")
 async def login_check(data: dict):
-    username = data.get("username", "")
-    password = data.get("password", "")
-    if username == "hicham" and password == "1234":
-        return {"status": "ok"}
-    return {"status": "error"}
+    # بيانات الدخول ثابتة
+    if data.get("username") == "hicham" and data.get("password") == "1234":
+        return {"status":"ok"}
+    return {"status":"error"}
 
 @app.post("/create_request")
 async def create_request(data: dict):
-    return {"message": "تم إرسال الطلب بنجاح"}
+    return {"message":"تم إرسال الطلب بنجاح"}
