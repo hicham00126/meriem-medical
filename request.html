@@ -1,119 +1,116 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>طلب نقل مريض</title>
-    <style>
-        body {
-            font-family: Arial, Tahoma, sans-serif;
-            background: #eef2f3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            width: 420px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px #bbb;
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        input, select, button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            font-size: 16px;
-            border-radius: 6px;
-            border: 1px solid #aaa;
-            box-sizing: border-box;
-        }
-
-        button {
-            background: #0077cc;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #005da3;
-        }
-
-        #msg {
-            margin-top: 15px;
-            color: green;
-            font-weight: bold;
-            min-height: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>طلب نقل مريض</title>
+<style>
+  body {font-family: Arial, Tahoma, sans-serif; background:#eef2f3; margin:0; min-height:100vh;
+        display:flex; align-items:center; justify-content:center;}
+  .card {background:#fff; padding:28px; width:420px; max-width:94%; border-radius:12px;
+         box-shadow:0 6px 18px rgba(0,0,0,0.08); text-align:center;}
+  h2 {margin:0 0 14px 0; font-size:20px;}
+  input, select, button {width:100%; padding:12px; margin-top:10px; font-size:15px; border-radius:8px;
+                         border:1px solid #cfcfcf; box-sizing:border-box;}
+  select {appearance:none;}
+  button {background:#0077cc; color:#fff; border:none; cursor:pointer;}
+  button[disabled]{opacity:0.6; cursor:not-allowed;}
+  #msg {min-height:22px; margin-top:12px; font-weight:600;}
+  #msg.success {color:green;}
+  #msg.error {color:#c00;}
+  .small {font-size:13px; color:#666; margin-top:6px;}
+</style>
 </head>
 <body>
 
-<div class="card">
-    <h2>طلب نقل مريض</h2>
+<div class="card" role="main" aria-labelledby="title">
+  <h2 id="title">طلب نقل مريض</h2>
 
-    <input id="patient_name" placeholder="اسم المريض" type="text" />
+  <input id="patient_name" type="text" placeholder="اسم المريض" autocomplete="off" />
+  <input id="patient_id" type="text" placeholder="رقم المريض (اختياري)" autocomplete="off" />
 
-    <select id="from_dep">
-        <option value="">اختر المصلحة الحالية</option>
-        <option>الاستعجالات</option>
-        <option>الجراحة</option>
-        <option>الطب الداخلي</option>
-        <option>الإنعاش</option>
-    </select>
+  <select id="from_dep" aria-label="المصلحة الحالية">
+    <option value="">اختر المصلحة الحالية</option>
+    <option>الاستعجالات</option>
+    <option>الجراحة</option>
+    <option>الطب الداخلي</option>
+    <option>الإنعاش</option>
+  </select>
 
-    <select id="to_dep">
-        <option value="">اختر المصلحة المطلوبة</option>
-        <option>الاستعجالات</option>
-        <option>الجراحة</option>
-        <option>الطب الداخلي</option>
-        <option>الإنعاش</option>
-        <option>مصلحة جراحة الاوعية  والشرايين</option>
-        <option>مصلحة أمراض الكلى</option>
-        <option>مصلحة أمراض الدم</option>
-        <option>مصلحة الامراض التنفسية</option>
-        <option>مصلحة الامراض المعدية</option>
-        <option>مصلحة الانعاش الجراحي</option>
-        <option>مصلحة  الانعاش الطبي</option>
-        <option>مصلحة جراحة العظام</option>
-        <option>مصلحة المسالك البولية</option> 
-        <option>مصلحة أمراض القلب</option>
-        <option>مصلحة جراحة الرجال</option>
-        <option>مصلحة جراحة النساء</option>
-        <option>مصلحة جراحة الاطفال</option>
-    </select>
+  <select id="to_dep" aria-label="المصلحة المطلوبة">
+    <option value="">اختر المصلحة المطلوبة</option>
+    <option>الاستعجالات</option>
+    <option>الجراحة</option>
+    <option>الطب الداخلي</option>
+    <option>الإنعاش</option>
+  </select>
 
-    <div id="msg"></div>
+  <div id="msg" aria-live="polite"></div>
 
-    <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
+  <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
+  <div class="small">تأكد من صحة المعلومات قبل الإرسال.</div>
 </div>
 
 <script>
-async function sendRequest(){
-    const patient_name = document.getElementById('patient_name').value;
+  async function sendRequest(){
+    const btn = document.getElementById('sendBtn');
+    const msg = document.getElementById('msg');
+
+    const patient_name = document.getElementById('patient_name').value.trim();
+    const patient_id = document.getElementById('patient_id').value.trim();
     const from_dep = document.getElementById('from_dep').value;
     const to_dep = document.getElementById('to_dep').value;
 
-    const res = await fetch("http://127.0.0.1:9000/create_request", {
+    // تحقق بسيط
+    if(!patient_name){
+      msg.className = "error";
+      msg.innerText = "رجاءً أدخل اسم المريض.";
+      return;
+    }
+    if(!from_dep || !to_dep){
+      msg.className = "error";
+      msg.innerText = "رجاءً اختر المصلحة الحالية والمراد الانتقال إليها.";
+      return;
+    }
+    if(from_dep === to_dep){
+      msg.className = "error";
+      msg.innerText = "المصلحة الحالية والمراد نفسهما — اختر مصلحة مختلفة.";
+      return;
+    }
+
+    // منع الإرسال المتكرر
+    btn.disabled = true;
+    const originalText = btn.innerText;
+    btn.innerText = "جاري الإرسال...";
+
+    try {
+      const res = await fetch("/create_request", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ patient_name, from_dep, to_dep })
-    });
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ patient_name, patient_id, from_dep, to_dep })
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    document.getElementById('msg').innerText = data.message;
-    document.getElementById('sendBtn').innerText = "تأكيد الطلب";
-}
+      if(res.ok){
+        msg.className = "success";
+        msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+        btn.innerText = "تأكيد الطلب";
+        // يمكنك هنا إفراغ الحقول إن رغبت:
+        // document.getElementById('patient_name').value = "";
+      } else {
+        msg.className = "error";
+        msg.innerText = data.message || ("خطأ: " + (data.detail || res.status));
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    } catch (e) {
+      msg.className = "error";
+      msg.innerText = "خطأ في الاتصال. تأكد من الإنترنت وحاول مرة أخرى.";
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
+  }
 </script>
 
 </body>
