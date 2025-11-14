@@ -26,7 +26,7 @@ def request_page():
 @app.post("/login_check")
 async def login_check(data: dict):
     # بيانات الدخول ثابتة
-    if data.get("username") == "hicham" and data.get("password") == "1234":
+    if data.get("username") == "" and data.get("password") == "":
         return {"status":"ok"}
     return {"status":"error"}
 
