@@ -7,66 +7,54 @@
 
 <style>
 body {
-  margin: 0;
   font-family: "Tahoma", Arial, sans-serif;
+  margin: 0;
   height: 100vh;
-
-  /* صورة الخلفية */
-  background: 
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
-    url("eph_logo.png") no-repeat center center fixed;
-  background-size: cover;
-
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
+    url("/static/eph_logo.png") no-repeat center center fixed;
+  background-size: cover;
 }
 
-/* البطاقة */
 .card {
+  background: rgba(255, 255, 255, 0.9);
   width: 360px;
-  padding: 30px;
-  border-radius: 16px;
+  padding: 32px;
+  border-radius: 14px;
   text-align: center;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-/* الشعار فوق */
-.logo {
-  width: 90px;
-  margin-bottom: 10px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
 }
 
 h2 {
-  margin: 0;
+  margin-top: 0;
   font-size: 24px;
   color: #0a5fa4;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-/* الخانات */
 input {
   width: 100%;
-  padding: 12px;
-  margin-top: 12px;
+  padding: 14px;
+  margin-top: 14px;
   border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 15px;
+  font-size: 16px;
 }
 
-/* زر الدخول */
 button {
   width: 100%;
+  margin-top: 20px;
   padding: 14px;
-  margin-top: 18px;
   background: #0b76c9;
   color: white;
   border: none;
-  border-radius: 12px;
-  cursor: pointer;
   font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
   transition: 0.25s;
 }
 
@@ -75,9 +63,10 @@ button:hover {
 }
 
 #error {
-  margin-top: 14px;
+  margin-top: 12px;
   color: #b70000;
   font-weight: bold;
+  min-height: 20px;
 }
 </style>
 </head>
@@ -85,30 +74,26 @@ button:hover {
 <body>
 
 <div class="card">
-
-  <img src="eph_logo.png" class="logo">
-
   <h2>تسجيل الدخول</h2>
 
-  <!-- خانات منظر فقط -->
-  <input placeholder="اسم المستخدم">
-  <input type="password" placeholder="كلمة المرور">
-
-  <!-- القيم الحقيقية (مخفية) -->
-  <input id="username" type="hidden" value="khelef">
-  <input id="password" type="hidden" value="lina">
+  <input id="username" placeholder="اسم المستخدم">
+  <input id="password" type="password" placeholder="كلمة المرور">
 
   <button onclick="login()">دخول</button>
 
   <div id="error"></div>
 </div>
 
-
 <script>
 async function login() {
     let user = document.getElementById("username").value.trim();
     let pass = document.getElementById("password").value.trim();
     let err = document.getElementById("error");
+
+    if(!user || !pass){
+        err.innerText = "الرجاء إدخال جميع البيانات.";
+        return;
+    }
 
     try {
         const res = await fetch("/login", {
@@ -120,7 +105,7 @@ async function login() {
         if(res.status === 200){
             window.location.href = "/request";
         } else {
-            err.innerText = "معلومات الدخول غير صحيحة.";
+            err.innerText = "اسم المستخدم أو كلمة المرور غير صحيحة.";
         }
 
     } catch (e){
