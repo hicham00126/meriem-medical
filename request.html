@@ -7,76 +7,67 @@
 
 <style>
 body {
+  font-family: Arial, Tahoma, sans-serif;
   margin: 0;
-  font-family: "Tahoma", Arial, sans-serif;
-  height: 100vh;
-
-  background: 
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
-    url("eph_logo.png") no-repeat center center fixed;
-  background-size: cover;
-
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
+    url("/static/eph_logo.png") no-repeat center center fixed;
+  background-size: cover;
 }
 
-/* البطاقة */
 .card {
-  width: 390px;
+  background: rgba(255,255,255,0.92);
+  width: 380px;
   padding: 28px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.30);
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-/* الشعار */
-.logo {
-  width: 90px;
-  margin-bottom: 10px;
 }
 
 h2 {
-  margin: 0;
-  font-size: 24px;
-  color: #0a5fa4;
-  margin-bottom: 20px;
+  margin: 0 0 14px 0;
+  font-size: 22px;
+  color: #0b76c9;
 }
 
-input, select {
+input, select, button {
   width: 100%;
   padding: 13px;
-  margin-top: 12px;
-  border-radius: 10px;
-  border: 1px solid #cfd6dd;
-  font-size: 15px;
+  margin-top: 11px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
 }
 
 button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 20px;
-  background: #0b76c9;
+  background: #0077cc;
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
   cursor: pointer;
-  transition: 0.25s;
+  margin-top: 18px;
 }
 
-button:hover { background: #095ea3; }
+button:hover {
+  background: #0a5fa4;
+}
 
 #msg {
-  margin-top: 14px;
+  margin-top: 10px;
   font-weight: bold;
-  min-height: 22px;
 }
 
-#msg.success { color: green; }
-#msg.error   { color: red; }
+#msg.success {
+  color: green;
+}
+
+#msg.error {
+  color: red;
+}
 </style>
 </head>
 
@@ -84,16 +75,14 @@ button:hover { background: #095ea3; }
 
 <div class="card">
 
-  <img src="eph_logo.png" class="logo">
-
   <h2>🚑 طلب نقل مريض</h2>
 
   <input id="patient_name" placeholder="اسم المريض">
 
   <select id="patient_state">
       <option value="">حالة المريض</option>
-      <option>عاجلة</option>
-      <option>مستقرة</option>
+      <option value="عاجلة">عاجلة</option>
+      <option value="مستقرة">مستقرة</option>
   </select>
 
   <select id="from_dep">
@@ -101,9 +90,19 @@ button:hover { background: #095ea3; }
       <option>الاستعجالات</option>
       <option>الطب الداخلي</option>
       <option>الإنعاش</option>
-      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة جراحة الاوعية والشرايين</option>
       <option>مصلحة أمراض الكلى</option>
+      <option>مصلحة أمراض الدم</option>
+      <option>مصلحة الامراض التنفسية</option>
+      <option>مصلحة الامراض المعدية</option>
+      <option>مصلحة الانعاش الجراحي</option>
+      <option>مصلحة الانعاش الطبي</option>
+      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة المسالك البولية</option>
       <option>مصلحة أمراض القلب</option>
+      <option>مصلحة جراحة الرجال</option>
+      <option>مصلحة جراحة النساء</option>
+      <option>مصلحة جراحة الاطفال</option>
   </select>
 
   <select id="to_dep">
@@ -111,34 +110,43 @@ button:hover { background: #095ea3; }
       <option>الاستعجالات</option>
       <option>الطب الداخلي</option>
       <option>الإنعاش</option>
-      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة جراحة الاوعية والشرايين</option>
       <option>مصلحة أمراض الكلى</option>
+      <option>مصلحة أمراض الدم</option>
+      <option>مصلحة الامراض التنفسية</option>
+      <option>مصلحة الامراض المعدية</option>
+      <option>مصلحة الانعاش الجراحي</option>
+      <option>مصلحة الانعاش الطبي</option>
+      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة المسالك البولية</option>
       <option>مصلحة أمراض القلب</option>
+      <option>مصلحة جراحة الرجال</option>
+      <option>مصلحة جراحة النساء</option>
+      <option>مصلحة جراحة الاطفال</option>
   </select>
+
+  <div id="msg"></div>
 
   <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
 
-  <div id="msg"></div>
 </div>
-
 
 <script>
 async function sendRequest() {
-  const name = document.getElementById("patient_name").value.trim();
-  const state = document.getElementById("patient_state").value;
-  const from = document.getElementById("from_dep").value;
-  const to = document.getElementById("to_dep").value;
-
+  const patient_name = document.getElementById("patient_name").value.trim();
+  const patient_state = document.getElementById("patient_state").value;
+  const from_dep = document.getElementById("from_dep").value;
+  const to_dep = document.getElementById("to_dep").value;
   const msg = document.getElementById("msg");
   const btn = document.getElementById("sendBtn");
 
-  if(!name || !state || !from || !to){
+  if (!patient_name || !patient_state || !from_dep || !to_dep) {
     msg.className = "error";
     msg.innerText = "يرجى ملء جميع المعلومات.";
     return;
   }
 
-  if(from === to){
+  if (from_dep === to_dep) {
     msg.className = "error";
     msg.innerText = "لا يمكن اختيار نفس المصلحة.";
     return;
@@ -151,16 +159,17 @@ async function sendRequest() {
     const res = await fetch("/create_request", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ patient_name: name, patient_state: state, from_dep: from, to_dep: to })
+      body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
     });
 
     const data = await res.json();
 
     msg.className = "success";
     msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+
     btn.innerText = "تأكيد الطلب";
 
-  } catch {
+  } catch (e) {
     msg.className = "error";
     msg.innerText = "خطأ في الاتصال.";
     btn.disabled = false;
