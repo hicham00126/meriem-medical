@@ -8,71 +8,74 @@
 <style>
 body {
   font-family: "Tahoma", Arial, sans-serif;
-  background: linear-gradient(135deg, #0b76c9, #4cb0f5);
   margin: 0;
   height: 100vh;
+
+  /* 🌟 خلفية كاملة بالشعار */
+  background: url("eph_logo.png") no-repeat center center fixed;
+  background-size: cover;
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .card {
-  background: #fff;
-  width: 380px;
+  background: rgba(255,255,255,0.92);
+  width: 390px;
   padding: 28px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+  border-radius: 16px;
   text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.22);
 }
 
 h2 {
   margin-top: 0;
-  margin-bottom: 20px;
+  font-size: 24px;
   color: #0a5fa4;
-  font-size: 22px;
+  margin-bottom: 20px;
 }
 
 input, select {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   margin-top: 12px;
   border-radius: 10px;
-  border: 1px solid #cfcfcf;
+  border: 1px solid #cfd6dd;
   font-size: 15px;
 }
 
 button {
   width: 100%;
   padding: 14px;
-  margin-top: 18px;
+  margin-top: 20px;
   background: #0b76c9;
   color: #fff;
   border: none;
+  border-radius: 12px;
   font-size: 16px;
-  border-radius: 10px;
   cursor: pointer;
   transition: 0.25s;
 }
 
-button:hover {
-  background: #095d9e;
-}
+button:hover { background: #095ea3; }
 
 #msg {
-  margin-top: 15px;
+  margin-top: 14px;
   font-weight: bold;
-  min-height: 20px;
+  min-height: 22px;
 }
 
-#msg.success {color: green;}
-#msg.error {color: #c00;}
+#msg.success { color: green; }
+#msg.error   { color: red; }
 </style>
 </head>
 
 <body>
 
 <div class="card">
-  <h2>طلب نقل مريض</h2>
+
+  <h2>🚑 طلب نقل مريض</h2>
 
   <input id="patient_name" placeholder="اسم المريض">
 
@@ -87,9 +90,9 @@ button:hover {
       <option>الاستعجالات</option>
       <option>الطب الداخلي</option>
       <option>الإنعاش</option>
-      <option>جراحة العظام</option>
-      <option>أمراض الكلى</option>
-      <option>أمراض القلب</option>
+      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة أمراض الكلى</option>
+      <option>مصلحة أمراض القلب</option>
   </select>
 
   <select id="to_dep">
@@ -97,9 +100,9 @@ button:hover {
       <option>الاستعجالات</option>
       <option>الطب الداخلي</option>
       <option>الإنعاش</option>
-      <option>جراحة العظام</option>
-      <option>أمراض الكلى</option>
-      <option>أمراض القلب</option>
+      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة أمراض الكلى</option>
+      <option>مصلحة أمراض القلب</option>
   </select>
 
   <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
@@ -109,43 +112,49 @@ button:hover {
 </div>
 
 <script>
-async function sendRequest(){
-    const name = document.getElementById("patient_name").value.trim();
-    const state = document.getElementById("patient_state").value;
-    const from = document.getElementById("from_dep").value;
-    const to = document.getElementById("to_dep").value;
+async function sendRequest() {
+  const patient_name = document.getElementById("patient_name").value.trim();
+  const patient_state = document.getElementById("patient_state").value;
+  const from_dep = document.getElementById("from_dep").value;
+  const to_dep = document.getElementById("to_dep").value;
 
-    const msg = document.getElementById("msg");
-    const btn = document.getElementById("sendBtn");
+  const msg = document.getElementById("msg");
+  const btn = document.getElementById("sendBtn");
 
-    if(!name || !state || !from || !to){
-        msg.className = "error";
-        msg.innerText = "الرجاء ملء جميع المعلومات.";
-        return;
-    }
+  if (!patient_name || !patient_state || !from_dep || !to_dep) {
+    msg.className = "error";
+    msg.innerText = "يرجى ملء جميع المعلومات.";
+    return;
+  }
 
-    btn.disabled = true;
-    btn.innerText = "جاري الإرسال...";
+  if (from_dep === to_dep) {
+    msg.className = "error";
+    msg.innerText = "لا يمكن اختيار نفس المصلحة.";
+    return;
+  }
 
-    try {
-        const res = await fetch("/create_request", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({patient_name: name, patient_state: state, from_dep: from, to_dep: to})
-        });
+  btn.disabled = true;
+  btn.innerText = "جاري الإرسال...";
 
-        const data = await res.json();
+  try {
+    const res = await fetch("/create_request", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
+    });
 
-        msg.className = "success";
-        msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
-        btn.innerText = "تأكيد الطلب";
+    const data = await res.json();
 
-    } catch (e){
-        msg.className = "error";
-        msg.innerText = "خطأ في الاتصال.";
-        btn.disabled = false;
-        btn.innerText = "إرسال الطلب";
-    }
+    msg.className = "success";
+    msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+    btn.innerText = "تأكيد الطلب";
+
+  } catch (e) {
+    msg.className = "error";
+    msg.innerText = "خطأ في الاتصال.";
+    btn.disabled = false;
+    btn.innerText = "إرسال الطلب";
+  }
 }
 </script>
 
