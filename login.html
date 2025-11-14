@@ -9,20 +9,24 @@
 body {
   font-family: "Tahoma", Arial, sans-serif;
   margin: 0;
-  background: linear-gradient(135deg, #0b76c9, #4cb0f5);
   height: 100vh;
+
+  /* 🌟 خلفية كاملة بالشعار */
+  background: url("eph_logo.png") no-repeat center center fixed;
+  background-size: cover;
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .card {
-  background: #ffffff;
+  background: rgba(255,255,255,0.90); /* شفاف قليلاً */
   width: 360px;
   padding: 30px;
   border-radius: 14px;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.20);
 }
 
 h2 {
@@ -54,9 +58,7 @@ button {
   transition: 0.25s;
 }
 
-button:hover {
-  background: #095d9e;
-}
+button:hover { background: #095d9e; }
 
 #error {
   margin-top: 14px;
@@ -72,7 +74,7 @@ button:hover {
 <div class="card">
   <h2>تسجيل الدخول</h2>
 
-  <!-- خانات ظاهرية فقط للمنظر -->
+  <!-- خانات للمنظر فقط -->
   <input placeholder="اسم المستخدم">
   <input type="password" placeholder="كلمة المرور">
 
