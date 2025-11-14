@@ -7,12 +7,14 @@
 
 <style>
 body {
-  font-family: "Tahoma", Arial, sans-serif;
   margin: 0;
+  font-family: "Tahoma", Arial, sans-serif;
   height: 100vh;
 
-  /* 🌟 خلفية كاملة بالشعار */
-  background: url("eph_logo.png") no-repeat center center fixed;
+  /* صورة الخلفية */
+  background: 
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)),
+    url("eph_logo.png") no-repeat center center fixed;
   background-size: cover;
 
   display: flex;
@@ -20,22 +22,31 @@ body {
   align-items: center;
 }
 
+/* البطاقة */
 .card {
-  background: rgba(255,255,255,0.90); /* شفاف قليلاً */
   width: 360px;
   padding: 30px;
-  border-radius: 14px;
+  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.20);
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* الشعار فوق */
+.logo {
+  width: 90px;
+  margin-bottom: 10px;
 }
 
 h2 {
-  margin-top: 0;
-  font-size: 23px;
+  margin: 0;
+  font-size: 24px;
   color: #0a5fa4;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
+/* الخانات */
 input {
   width: 100%;
   padding: 12px;
@@ -45,26 +56,28 @@ input {
   font-size: 15px;
 }
 
+/* زر الدخول */
 button {
   width: 100%;
-  margin-top: 18px;
   padding: 14px;
+  margin-top: 18px;
   background: #0b76c9;
   color: white;
   border: none;
-  font-size: 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
+  font-size: 16px;
   transition: 0.25s;
 }
 
-button:hover { background: #095d9e; }
+button:hover {
+  background: #095d9e;
+}
 
 #error {
   margin-top: 14px;
   color: #b70000;
   font-weight: bold;
-  min-height: 20px;
 }
 </style>
 </head>
@@ -72,9 +85,12 @@ button:hover { background: #095d9e; }
 <body>
 
 <div class="card">
+
+  <img src="eph_logo.png" class="logo">
+
   <h2>تسجيل الدخول</h2>
 
-  <!-- خانات للمنظر فقط -->
+  <!-- خانات منظر فقط -->
   <input placeholder="اسم المستخدم">
   <input type="password" placeholder="كلمة المرور">
 
@@ -86,6 +102,7 @@ button:hover { background: #095d9e; }
 
   <div id="error"></div>
 </div>
+
 
 <script>
 async function login() {
