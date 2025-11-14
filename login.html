@@ -2,39 +2,110 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>تسجيل الدخول</title>
+
 <style>
-body {font-family: Arial; background:#eef2f3; display:flex; justify-content:center; align-items:center; height:100vh;}
-.card {background:white; padding:30px; width:350px; border-radius:12px; box-shadow:0 0 10px #bbb; text-align:center;}
-input,button {width:100%; padding:12px; margin-top:10px; font-size:16px; border-radius:6px;}
-button {background:#0077cc; color:white; border:none;}
+body {
+  font-family: "Tahoma", Arial, sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #0b76c9, #4cb0f5);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: #ffffff;
+  width: 360px;
+  padding: 30px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 23px;
+  color: #0a5fa4;
+  margin-bottom: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: #0b76c9;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+button:hover {
+  background: #095d9e;
+}
+
+#error {
+  margin-top: 14px;
+  color: #b70000;
+  font-weight: bold;
+  min-height: 20px;
+}
 </style>
 </head>
+
 <body>
+
 <div class="card">
-<h2>تسجيل الدخول</h2>
-<input id="username" placeholder="اسم المستخدم">
-<input id="password" placeholder="كلمة المرور" type="password">
-<button onclick="login()">دخول</button>
-<div id="msg" style="color:red;margin-top:10px;"></div>
+  <h2>تسجيل الدخول</h2>
+
+  <input id="username" placeholder="اسم المستخدم">
+  <input id="password" type="password" placeholder="كلمة المرور">
+
+  <button onclick="login()">دخول</button>
+
+  <div id="error"></div>
 </div>
 
 <script>
-async function login(){
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
+async function login() {
+    let user = document.getElementById("username").value.trim();
+    let pass = document.getElementById("password").value.trim();
+    let err = document.getElementById("error");
 
-    let res = await fetch("/login_check", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({username, password})
-    });
+    if(!user || !pass){
+        err.innerText = "الرجاء إدخال جميع البيانات.";
+        return;
+    }
 
-    let data = await res.json();
-    if(data.status === "ok"){
-        window.location.href = "/request";
-    } else {
-        document.getElementById("msg").innerText = "خطأ في تسجيل الدخول";
+    try {
+        const res = await fetch("/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: user, password: pass})
+        });
+
+        if(res.status === 200){
+            window.location.href = "/request";
+        } else {
+            err.innerText = "اسم المستخدم أو كلمة المرور غير صحيحة.";
+        }
+
+    } catch (e){
+        err.innerText = "خطأ في الاتصال بالخادم.";
     }
 }
 </script>
