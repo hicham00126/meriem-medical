@@ -2,142 +2,155 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>طلب نقل مريض</title>
+
 <style>
-  body {font-family: Arial, Tahoma, sans-serif; background:#eef2f3; margin:0; min-height:100vh;
-        display:flex; align-items:center; justify-content:center;}
-  .card {background:#fff; padding:28px; width:420px; max-width:94%; border-radius:12px;
-         box-shadow:0 6px 18px rgba(0,0,0,0.08); text-align:center;}
-  h2 {margin:0 0 14px 0; font-size:20px;}
-  input, select, button {width:100%; padding:12px; margin-top:10px; font-size:15px; border-radius:8px;
-                         border:1px solid #cfcfcf; box-sizing:border-box;}
-  select {appearance:none;}
-  button {background:#0077cc; color:#fff; border:none; cursor:pointer;}
-  button[disabled]{opacity:0.6; cursor:not-allowed;}
-  #msg {min-height:22px; margin-top:12px; font-weight:600;}
-  #msg.success {color:green;}
-  #msg.error {color:#c00;}
-  .small {font-size:13px; color:#666; margin-top:6px;}
+body {
+  font-family: Arial, Tahoma, sans-serif;
+  background: #eef2f3;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.card {
+  background: white;
+  width: 380px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+}
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+}
+button {
+  background: #0077cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+#msg { margin-top: 10px; font-weight: bold; }
+#msg.success { color: green; }
+#msg.error { color: red; }
 </style>
 </head>
+
 <body>
 
 <div class="card">
+
   <h2>طلب نقل مريض</h2>
 
-  <input id="patient_name" type="text" placeholder="اسم المريض" autocomplete="off" />
+  <input id="patient_name" placeholder="اسم المريض" />
 
   <!-- حالة المريض -->
   <select id="patient_state">
-        <option value="">اختر حالة المريض</option>
-        <option>عاجلة</option>
-        <option>مستقرة</option>
+      <option value="">اختر حالة المريض</option>
+      <option value="عاجلة">عاجلة</option>
+      <option value="مستقرة">مستقرة</option>
   </select>
 
   <!-- المصلحة الحالية -->
   <select id="from_dep">
-    <option value="">اختر المصلحة الحالية</option>
-        <option>الاستعجالات</option>
-        <option>الطب الداخلي</option>
-        <option>الإنعاش</option>
-        <option>مصلحة جراحة الاوعية والشرايين</option>
-        <option>مصلحة أمراض الكلى</option>
-        <option>مصلحة أمراض الدم</option>
-        <option>مصلحة الامراض التنفسية</option>
-        <option>مصلحة الامراض المعدية</option>
-        <option>مصلحة الانعاش الجراحي</option>
-        <option>مصلحة الانعاش الطبي</option>
-        <option>مصلحة جراحة العظام</option>
-        <option>مصلحة المسالك البولية</option> 
-        <option>مصلحة أمراض القلب</option>
-        <option>مصلحة جراحة الرجال</option>
-        <option>مصلحة جراحة النساء</option>
-        <option>مصلحة جراحة الاطفال</option>
+      <option value="">اختر المصلحة الحالية</option>
+      <option>الاستعجالات</option>
+      <option>الطب الداخلي</option>
+      <option>الإنعاش</option>
+      <option>مصلحة جراحة الاوعية والشرايين</option>
+      <option>مصلحة أمراض الكلى</option>
+      <option>مصلحة أمراض الدم</option>
+      <option>مصلحة الامراض التنفسية</option>
+      <option>مصلحة الامراض المعدية</option>
+      <option>مصلحة الانعاش الجراحي</option>
+      <option>مصلحة الانعاش الطبي</option>
+      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة المسالك البولية</option>
+      <option>مصلحة أمراض القلب</option>
+      <option>مصلحة جراحة الرجال</option>
+      <option>مصلحة جراحة النساء</option>
+      <option>مصلحة جراحة الاطفال</option>
   </select>
 
   <!-- المصلحة المطلوبة -->
   <select id="to_dep">
-    <option value="">اختر المصلحة المطلوبة</option>
-        <option>الاستعجالات</option>
-        <option>الطب الداخلي</option>
-        <option>الإنعاش</option>
-        <option>مصلحة جراحة الاوعية والشرايين</option>
-        <option>مصلحة أمراض الكلى</option>
-        <option>مصلحة أمراض الدم</option>
-        <option>مصلحة الامراض التنفسية</option>
-        <option>مصلحة الامراض المعدية</option>
-        <option>مصلحة الانعاش الجراحي</option>
-        <option>مصلحة الانعاش الطبي</option>
-        <option>مصلحة جراحة العظام</option>
-        <option>مصلحة المسالك البولية</option> 
-        <option>مصلحة أمراض القلب</option>
-        <option>مصلحة جراحة الرجال</option>
-        <option>مصلحة جراحة النساء</option>
-        <option>مصلحة جراحة الاطفال</option>
+      <option value="">اختر المصلحة المطلوبة</option>
+      <option>الاستعجالات</option>
+      <option>الطب الداخلي</option>
+      <option>الإنعاش</option>
+      <option>مصلحة جراحة الاوعية والشرايين</option>
+      <option>مصلحة أمراض الكلى</option>
+      <option>مصلحة أمراض الدم</option>
+      <option>مصلحة الامراض التنفسية</option>
+      <option>مصلحة الامراض المعدية</option>
+      <option>مصلحة الانعاش الجراحي</option>
+      <option>مصلحة الانعاش الطبي</option>
+      <option>مصلحة جراحة العظام</option>
+      <option>مصلحة المسالك البولية</option>
+      <option>مصلحة أمراض القلب</option>
+      <option>مصلحة جراحة الرجال</option>
+      <option>مصلحة جراحة النساء</option>
+      <option>مصلحة جراحة الاطفال</option>
   </select>
 
   <div id="msg"></div>
 
   <button id="sendBtn" onclick="sendRequest()">إرسال الطلب</button>
-  <div class="small">تأكد من صحة المعلومات قبل الإرسال.</div>
+
 </div>
 
 <script>
-  async function sendRequest(){
-    const btn = document.getElementById('sendBtn');
-    const msg = document.getElementById('msg');
+async function sendRequest() {
+  const patient_name = document.getElementById("patient_name").value.trim();
+  const patient_state = document.getElementById("patient_state").value;
+  const from_dep = document.getElementById("from_dep").value;
+  const to_dep = document.getElementById("to_dep").value;
+  const msg = document.getElementById("msg");
+  const btn = document.getElementById("sendBtn");
 
-    const patient_name = document.getElementById('patient_name').value.trim();
-    const patient_state = document.getElementById('patient_state').value;
-    const from_dep = document.getElementById('from_dep').value;
-    const to_dep = document.getElementById('to_dep').value;
-
-    if(!patient_name){
-      msg.className = "error";
-      msg.innerText = "رجاءً أدخل اسم المريض.";
-      return;
-    }
-    if(!patient_state){
-      msg.className = "error";
-      msg.innerText = "رجاءً اختر حالة المريض.";
-      return;
-    }
-    if(!from_dep || !to_dep){
-      msg.className = "error";
-      msg.innerText = "رجاءً اختر المصلحة الحالية والمراد الانتقال إليها.";
-      return;
-    }
-    if(from_dep === to_dep){
-      msg.className = "error";
-      msg.innerText = "المصلحتان متشابهتان — اختر مصلحة مختلفة.";
-      return;
-    }
-
-    btn.disabled = true;
-    btn.innerText = "جاري الإرسال...";
-    msg.innerText = "";
-
-    try {
-      const res = await fetch("/create_request", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
-      });
-
-      const data = await res.json();
-
-      msg.className = "success";
-      msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
-      btn.innerText = "تأكيد الطلب";
-
-    } catch (e) {
-      msg.className = "error";
-      msg.innerText = "خطأ في الاتصال. حاول مرة أخرى.";
-      btn.disabled = false;
-      btn.innerText = "إرسال الطلب";
-    }
+  if (!patient_name || !patient_state || !from_dep || !to_dep) {
+    msg.className = "error";
+    msg.innerText = "يرجى ملء جميع المعلومات.";
+    return;
   }
+
+  if (from_dep === to_dep) {
+    msg.className = "error";
+    msg.innerText = "لا يمكن اختيار نفس المصلحة.";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerText = "جاري الإرسال...";
+
+  try {
+    const res = await fetch("/create_request", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ patient_name, patient_state, from_dep, to_dep })
+    });
+
+    const data = await res.json();
+
+    msg.className = "success";
+    msg.innerText = data.message || "تم إرسال الطلب بنجاح.";
+
+    btn.innerText = "تأكيد الطلب";
+
+  } catch (e) {
+    msg.className = "error";
+    msg.innerText = "خطأ في الاتصال.";
+    btn.disabled = false;
+    btn.innerText = "إرسال الطلب";
+  }
+}
 </script>
 
 </body>
